@@ -174,6 +174,22 @@ TCP 三次握手的意义：client和server双方都能够确定能够向对方�
 
 #### 2-3 介绍下 BFC 及其应用
 
+BFC即块级格式上下文，描述的是DOM里一块隔离了的独立容器，容器内的元素无论如何翻江倒海，都不会影响容器外的元素的布局。
+
+BFC常见的特性：
+
+1. BFC使得文档流中的两个元素的margin重叠
+2. BFC下的容器能过包裹浮动元素（清除浮动）
+3. BFC能够阻止元素被浮动元素覆盖
+
+触发BFC的条件：
+
+1. body根元素
+2. 浮动元素，设置了float除none之外的属性的元素
+3. 绝对定位元素：position:absolute/fixed
+4. 设置了overflow除visible之外的属性的元素
+5. display为inline-block、table-cell和flex的元素
+
 #### 2-4 浏览器的渲染原理
 
 #### 2-5 介绍下重绘和回流（Repaint & Reflow），以及如何进行优化？
