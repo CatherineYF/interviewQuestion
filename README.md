@@ -284,7 +284,41 @@ BFC常见的特性：
 
 #### 5-1 什么是防抖和节流？有什么区别？如何实现？
 
+防抖和节流的使用场景，都是在事件的回调函数被频繁触发时，为了节约性能，使其延缓执行的一种手段。
 
+防抖的概念，是指触发高频事件后，回调函数在n秒内只执行一次，如果n秒内事件触发了多次，则重新计算时间
+
+节流的概念，是指高频事件触发后，每隔一段时间，只执行一次函数。（这种手段稀释了函数的执行周期）
+
+实现：
+
+```javascript
+function debounce(fn,delay){
+  let timer;
+  return function(){
+    let _this = this
+    let args = arguments
+    if(timer){
+      clearTimeout(timer)
+    }
+    timer = setTimeout(()=>{
+      fn.apply(_this,args)
+    },delay)
+  }
+}
+
+function test(){
+  console.log('test')
+}
+let debounceFn = debounce(test,5000)
+someBtn.onclick=function(){
+  debounceFn()
+}
+```
+
+防抖的使用场景：当在频繁操作后只需在最后执行回调操作(输入框监听内容变化、窗口大小resize)
+
+节流的使用场景：隔一段时间需要执行一次回调操作（如滚动加载，高频点击按钮）
 
 #### 5-2 页面的可用性时间的计算
 
