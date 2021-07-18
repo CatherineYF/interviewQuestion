@@ -364,11 +364,25 @@ someBtn.onclick=function(){
 
 #### 8-1 有哪些常见的Loader？他们是解决什么问题的？
 
-- file-loader: 用来处理图片、字体等资源文件的打包,输出一个相对url来引用打包后的对应文件
-- url-loader:和file-loader类似，用来打包图片、字体等资源，但与file-loader不同，url-loader可以指定一个limit，文件体积小于limit时，输出的是一个base64编码的data-url
-- css-loader:用来将样式资源
+- `file-loader`: 用来处理图片、字体等资源文件的打包,输出一个相对url来引用打包后的对应文件
+- `url-loader`:和file-loader类似，用来打包图片、字体等资源，但与file-loader不同，url-loader可以指定一个limit，文件体积小于limit时，输出的是一个base64编码的data-url
+- `css-loader`:用来将样式资源、
+- `vue-loader`：加载 Vue.js 单文件组件
+
+#### 8-2 有哪些常见的Plugin？你用过哪些Plugin？
 
 
+
+- `clean-webpack-plugin`: 目录清理
+
+
+
+#### 8-3 说一说Loader和Plugin的区别
+
+- `loader`本质上是一个function，在该function中对接收到的内容进行转换，返回转换后的结果。由于webpack本身只能处理js文件，loader的主要作用，是处理项目中所依赖的非js文件。
+- `plugin`的意思是插件，它是基于事件流来实现的。在webpack运行的生命周期中会广播出多个钩子事件，plugin能监听这些事件，通过webpack提供的API改变输出结果，扩展webpack的功能
+
+#### 8-4 Webpack构建流程简单说一下
 
 
 
