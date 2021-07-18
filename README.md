@@ -366,7 +366,8 @@ someBtn.onclick=function(){
 
 - `file-loader`: 用来处理图片、字体等资源文件的打包,输出一个相对url来引用打包后的对应文件
 - `url-loader`:和file-loader类似，用来打包图片、字体等资源，但与file-loader不同，url-loader可以指定一个limit，文件体积小于limit时，输出的是一个base64编码的data-url
-- `css-loader`:用来将样式资源、
+- `css-loader`:用来打包样式资源
+- `style-loader`：用来将css-loader输出的字符串作为style标签添加到页面中来
 - `vue-loader`：加载 Vue.js 单文件组件
 
 #### 8-2 有哪些常见的Plugin？你用过哪些Plugin？
@@ -383,6 +384,21 @@ someBtn.onclick=function(){
 - `plugin`的意思是插件，它是基于事件流来实现的。在webpack运行的生命周期中会广播出多个钩子事件，plugin能监听这些事件，通过webpack提供的API改变输出结果，扩展webpack的功能
 
 #### 8-4 Webpack构建流程简单说一下
+
+1. **初始化参数**：从配置文件和shell命令中读取并合并参数，得到最终参数
+2. **初始化编译**：将上一步得到的参数生成compiler对象，加载所有配置的插件
+3. **找到入口**：执行上一步compiler对象中的run方法，根据配置中的entry找到入口文件
+4. **模块编译**：从入口文件开始，调用各种loader对依赖的模块进行编译，再找出该模块依赖的模块，递归本步骤直到所有的文件都完成编译，得到所有内容最终编译后结果以及它们之间的依赖关系
+5. **准备输出资源**：根据入口和模块之间的依赖关系，生成若干个包含多个模块的chunk,再把每一个chunk转换成单独的文件加入到输出列表
+6. **完成输出**：确认好输出内容后，根据output中配置的输出路径和文件名，将内容写入磁盘对应目录
+
+
+
+以上过程中，webpack会在特定时间广播出特定事件，供注册的插件调用api，改变webpack的运行结果
+
+
+
+#### 8-5 webpack中的bundle、module、chunk分别是什么
 
 
 
