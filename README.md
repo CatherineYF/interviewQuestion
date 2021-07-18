@@ -348,15 +348,27 @@ someBtn.onclick=function(){
 
 ## 七、框架底层原理
 
-#### 6-1 写 React / Vue 项目时为什么要在列表组件中写 key，其作用是什么？
+#### 7-1 写 React / Vue 项目时为什么要在列表组件中写 key，其作用是什么？
 
-#### 6-2 Vue 的响应式原理中 Object.defineProperty 有什么缺陷？为什么在 Vue3.0 采用了 Proxy，抛弃了 Object.defineProperty？
+#### 7-2 Vue 的响应式原理中 Object.defineProperty 有什么缺陷？为什么在 Vue3.0 采用了 Proxy，抛弃了 Object.defineProperty？
 
-#### 6-3 在 Vue 中，子组件为何不可以修改父组件传递的 Prop，如果修改了，Vue 是如何监控到属性的修改并给出警告的。
+#### 7-3 在 Vue 中，子组件为何不可以修改父组件传递的 Prop，如果修改了，Vue 是如何监控到属性的修改并给出警告的。
 
-#### 6-4 Vue 的父组件和子组件生命周期钩子执行顺序是什么
+#### 7-4 Vue 的父组件和子组件生命周期钩子执行顺序是什么
 
-#### 6-5 Vue 双向数据绑定原理
+#### 7-5 Vue 双向数据绑定原理
+
+
+
+## 八、 前端工程化
+
+#### 8-1 有哪些常见的Loader？他们是解决什么问题的？
+
+- file-loader: 用来处理图片、字体等资源文件的打包,输出一个相对url来引用打包后的对应文件
+- url-loader:和file-loader类似，用来打包图片、字体等资源，但与file-loader不同，url-loader可以指定一个limit，文件体积小于limit时，输出的是一个base64编码的data-url
+- css-loader:用来将样式资源
+
+
 
 
 
