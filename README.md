@@ -402,5 +402,11 @@ someBtn.onclick=function(){
 
 
 
+#### 8-6 使用webpack开发时，你用过哪些可以提高效率的插件？
+
+- `webpack-merge`：提取公共配置，减少重复配置代码
+- `HotModuleReplacementPlugin`：模块热替换
+- `webpack-dashboard`：可以更友好的展示相关打包信息
+
  
 
