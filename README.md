@@ -340,7 +340,44 @@ someBtn.onclick=function(){
 
 #### 6-1 什么是 CSRF 攻击？如何防范 CSRF 攻击？
 
+CSRF攻击原意为跨站请求伪造(cross site request forgery),当用户登录正常网站A后，A网站会向用户的浏览器发送一个cookie用以保存用户信息，如果此时，用户又登录了黑客提供的B网站，而B网站在用户不知情的情况下向A网站发送了请求，此时这个请求会携带上A网站的cookie，让A网站的服务器以为是用户自发的请求，从而达到非法目的。
+
+防范CSRF攻击的方法：
+
+1. 验证请求头中的refer字段，若refer与当前请求的站点不相同，则被怀疑为CSRF攻击
+2. 使用token来进行身份验证
+3. 给cookie设置samesite属性，只有请求的URL和当前站点一致时，cookie才被发送
+
 #### 6-2 什么是XSS攻击？简述XSS的三种类型
+
+XSS攻击又名跨站脚本攻击(Cross site scripting)，主要攻击方式为向页面注入恶意攻击代码，当用户浏览该页面时，内部的恶意代码会执行从而达到攻击的目的。
+
+当页面被注入了恶意脚本时，它可以实现：
+
+- 获取页面cookie
+- 监听用户行为
+- 更改DOM结构、在页面内生成广告或表单
+- 劫持流量实现恶意跳转
+
+XSS有三种类型：
+
+1. 存储型XSS，黑客通过某种手段将恶意脚本保存至站点数据库，当用户访问站点时，服务器将恶意脚本和正常页面一起返回，浏览器执行了恶意脚本，从而实现攻击
+2. 反射型XSS，黑客通过在URL参数中注入恶意脚本，诱导用户点击这个URL，浏览器读取URL，并执行了其中的恶意脚本，从而实现攻击
+3. DOM型XSS，
+
+#### 6-3 什么是SQL注入攻击？
+
+SQL注入是一种常见的数据库攻击手段，它的实现方式，是黑客在表单中提交一段恶意的sql语句到服务器，服务器执行了恶意sql,达到了攻击的目的。
+
+
+
+#### 6-4 什么是DDOS攻击
+
+```txt
+DOS攻击又名服务拒绝攻击(Denial of service),其原理是发送大量合法请求到服务器，使服务器进入无法响应的状态
+```
+
+而DDOS攻击则是DOS攻击的升级版，全名为Distribute Denial of Service(分布式服务拒绝攻击)，攻击者借由公共网络，将大量计算机设备联合起来进行攻击
 
 
 
@@ -350,15 +387,35 @@ someBtn.onclick=function(){
 
 #### 7-1 写 React / Vue 项目时为什么要在列表组件中写 key，其作用是什么？
 
+key的作用就是给每一个VNode一个唯一的key，通过key可以更准确更快的拿到VNode。
+
+vue和react都是采用diff算法来对比新旧虚拟节点，从而更新节点。当新节点跟旧节点头尾交叉对比没有结果时，会根据新节点的key去对比旧节点数组中的key，从而找到相应的旧节点。如果没找到就认为是一个新增节点。而如果没有key，那么就会采用遍历查找的方式去找到对应的旧节点。
+
+在不带key的情况下，节点可以进行复用，省去了操作DOM的开销，只适用于简单的无状态组件的渲染。虽然带上唯一的key会增加开销，但是能保证组件的状态正确，而且用户基本感受不到差距。
+
 #### 7-2 Vue 的响应式原理中 Object.defineProperty 有什么缺陷？为什么在 Vue3.0 采用了 Proxy，抛弃了 Object.defineProperty？
+
+1. Object.defineProperty只能劫持对象的属性，从而需要对每个对象，每个属性进行遍历，如果，属性值是对象，还需要深度遍历。Proxy可以劫持整个对象，并返回一个新的对象。
+2. Proxy不仅可以代理对象，还可以代理数组。还可以代理动态增加的属性。
 
 #### 7-3 在 Vue 中，子组件为何不可以修改父组件传递的 Prop，如果修改了，Vue 是如何监控到属性的修改并给出警告的。
 
+在initProps方法中，在defineReactive时通过判断是否在开发环境，如果是开发环境，会在触发set的时候判断是否此key是否处于updatingChildren中被修改，如果不是，说明此修改来自子组件，触发warning提示。
+
 #### 7-4 Vue 的父组件和子组件生命周期钩子执行顺序是什么
+
+1. 加载渲染过程
+   `父beforeCreate->父created->父beforeMount->子beforeCreate->子created->子beforeMount->子mounted->父mounted`
+2. 子组件更新过程
+   `父beforeUpdate->子beforeUpdate->子updated->父updated`
+3. 父组件更新过程
+   `父beforeUpdate->父updated`
+4. 销毁过程
+   `父beforeDestroy->子beforeDestroy->子destroyed->父destroyed`
 
 #### 7-5 Vue 双向数据绑定原理
 
-
+vue.js 则是采用数据劫持结合发布者-订阅者模式的方式，通过`Object.defineProperty()`来劫持各个属性的`setter`，`getter`，在数据变动时发布消息给订阅者，触发相应的监听回调。
 
 ## 八、 前端工程化
 
