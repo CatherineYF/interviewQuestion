@@ -49,7 +49,7 @@ HTTPS 协议（HyperText Transfer Protocol over Secure Socket Layer）：一般�
 
 ​					了这个时间段，则资源过期。
 
-协商缓存：由于强缓存中存在无法判断服务区端资源是否在过期时间内被修改的情况，协商缓存应运而生。其主要思想，是对获取的资源					做标识，再下次请求资源时带上这个标识，由服务区判断资源是否被修改(修改了则返回200，未修改则返回304not 					modified)。
+协商缓存：由于强缓存中存在无法判断服务端资源是否在过期时间内被修改的情况，协商缓存应运而生。其主要思想，是对获取的资源					做标识，再下次请求资源时带上这个标识，由服务端判断资源是否被修改(修改了则返回200，未修改则返回304not 					modified)。
 
 ​					协商缓存一般通过http请求和响应的两对标识实现，他们分别是：last-modified和if-modified-since、e-tag和if-none-match
 
@@ -185,7 +185,7 @@ BFC即块级格式上下文，描述的是DOM里一块隔离了的独立容器�
 BFC常见的特性：
 
 1. BFC使得文档流中的两个元素的margin重叠
-2. BFC下的容器能过包裹浮动元素（清除浮动）
+2. BFC下的容器能够包裹浮动元素（清除浮动）
 3. BFC能够阻止元素被浮动元素覆盖
 
 触发BFC的条件：
@@ -240,9 +240,17 @@ BFC常见的特性：
 
 
 
-### 3-5 深浅拷贝
+### 3-5 JS-web-API
 
+##### 3-5-1 DOM是哪种数据结构
 
+DOM本质是一种树结构
+
+##### cookie、localStorage和sessionStorage的区别
+
+1. 从容量上看：cookie只有4kb大小，而localStorage和sessionStorage可以存储5M
+2. 从API易用性上看：cookie的API比较简陋，存取cookie不方便，而localStorage和sessionStorage API比较完善
+3. 从设计初衷上看：cookie本身是为了解决服务端和浏览器通信问题而生的，它会随着http请求发送给后端，而localStorage和sessionStorage不会发送给后端，它们的出现是为了实现浏览器存储。
 
 ### 3-6 JavaScript中的常用API
 
@@ -284,7 +292,9 @@ BFC常见的特性：
 
 #### 4-2 介绍下观察者模式和订阅-发布模式的区别，各自适用于什么场景
 
+观察者模式中，发布者和观察者之间彼此知道对方的存在
 
+发布-订阅模式中，发布者和订阅者是相互隔离的，通过事件中心这个中介来进行通信
 
 ## 五、性能优化
 
@@ -385,87 +395,69 @@ DOS攻击又名服务拒绝攻击(Denial of service),其原理是发送大量合
 
 ## 七、框架底层原理
 
-#### 7-1 写 React / Vue 项目时为什么要在列表组件中写 key，其作用是什么？
+#### 7-1 Vue的生命周期？mounted和created的区别？
 
-key的作用就是给每一个VNode一个唯一的key，通过key可以更准确更快的拿到VNode。
+Vue的生命周期有beforeCreate,created,beforeMount,mounted,beforeUpdate,updated,beforeDestroy,destroyed
 
-vue和react都是采用diff算法来对比新旧虚拟节点，从而更新节点。当新节点跟旧节点头尾交叉对比没有结果时，会根据新节点的key去对比旧节点数组中的key，从而找到相应的旧节点。如果没找到就认为是一个新增节点。而如果没有key，那么就会采用遍历查找的方式去找到对应的旧节点。
+其中created是在vue实例构建完成后调用，mounted是在该vue实例的数据挂在到dom上以后调用
 
-在不带key的情况下，节点可以进行复用，省去了操作DOM的开销，只适用于简单的无状态组件的渲染。虽然带上唯一的key会增加开销，但是能保证组件的状态正确，而且用户基本感受不到差距。
+#### 7-2 父子组件的生命周期调用顺序？
 
-#### 7-2 Vue 的响应式原理中 Object.defineProperty 有什么缺陷？为什么在 Vue3.0 采用了 Proxy，抛弃了 Object.defineProperty？
+1. 加载渲染过程 `父beforeCreate->父created->父beforeMount->子beforeCreate->子created->子beforeMount->子mounted->父mounted`
+2. 组件更新过程 `父beforeUpdate->子beforeUpdate->子updated->父updated`
+3. 销毁过程 `父beforeDestroy->子beforeDestroy->子destroyed->父destroyed`
 
-1. Object.defineProperty只能劫持对象的属性，从而需要对每个对象，每个属性进行遍历，如果，属性值是对象，还需要深度遍历。Proxy可以劫持整个对象，并返回一个新的对象。
-2. Proxy不仅可以代理对象，还可以代理数组。还可以代理动态增加的属性。
 
-#### 7-3 在 Vue 中，子组件为何不可以修改父组件传递的 Prop，如果修改了，Vue 是如何监控到属性的修改并给出警告的。
 
-在initProps方法中，在defineReactive时通过判断是否在开发环境，如果是开发环境，会在触发set的时候判断是否此key是否处于updatingChildren中被修改，如果不是，说明此修改来自子组件，触发warning提示。
+#### 如何理解MVVM
 
-需要特别注意的是，当你从子组件修改的prop属于基础类型时会触发提示。 这种情况下，你是无法修改父组件的数据源的， 因为基础类型赋值时是值拷贝。你直接将另一个非基础类型（Object, array）赋值到此key时也会触发提示(但实际上不会影响父组件的数据源)， 当你修改object的属性时不会触发提示，并且会修改父组件数据源的数据。
+MVVM是一种架构模式，其中M代表model数据，在vue中就是data数据；V代表view视图，vue中即DOM元素，vm代表viewModel，  vue中就是vue的一个实例，它控制着model数据和view视图之间的数据变动，当view发送改变时，vm实例中的domListener监听并响应对应事件，使数据model发生对应改变，而model的变化，则通过directive指令表达出来，在视图中呈现。
 
-#### 7-4 Vue 的父组件和子组件生命周期钩子执行顺序是什么
 
-1. 加载渲染过程
-   `父beforeCreate->父created->父beforeMount->子beforeCreate->子created->子beforeMount->子mounted->父mounted`
-2. 子组件更新过程
-   `父beforeUpdate->子beforeUpdate->子updated->父updated`
-3. 父组件更新过程
-   `父beforeUpdate->父updated`
-4. 销毁过程
-   `父beforeDestroy->子beforeDestroy->子destroyed->父destroyed`
 
-#### 7-5 Vue 双向数据绑定原理
+#### vue中的v-for为何要使用key
 
-vue.js 则是采用数据劫持结合发布者-订阅者模式的方式，通过`Object.defineProperty()`来劫持各个属性的`setter`，`getter`，在数据变动时发布消息给订阅者，触发相应的监听回调。
+
+
+#### 说一下vue的响应式原理
+
+vue的响应式是通过Object.defineProperty和观察者模式来实现的。vue会深度遍历传入的data，对每个data的属性调用Object.defineProperty，在其中设置setter和getter来劫持数据，在getter中收集依赖，将依赖该数据的观察者添加至发布者的subs数组中，在setter中触发依赖，通知依赖该数据的所有观察者去更新视图。
+
+#### Vue如何监听数组的变化
+
+vue会改写数组数据的原型proto为一个新对象，这个新对象的原型是Array.prototype,在这个新对象上重写了数组的push\pop\splice等方法，在触发这些方法后，首先去通知视图更新，然后再调用老原型上的对应方法更新数据。
+
+#### 描述组件渲染和更新的过程？
+
+
+
+#### 双向数据绑定v-model的实现原理
+
+
+
+
 
 ## 八、 前端工程化
 
-#### 8-1 有哪些常见的Loader？他们是解决什么问题的？
+#### 8-1 module、chunk和bundle分别是什么，有何区别？
 
-- `file-loader`: 用来处理图片、字体等资源文件的打包,输出一个相对url来引用打包后的对应文件
-- `url-loader`:和file-loader类似，用来打包图片、字体等资源，但与file-loader不同，url-loader可以指定一个limit，文件体积小于limit时，输出的是一个base64编码的data-url
-- `css-loader`:用来打包样式资源
-- `style-loader`：用来将css-loader输出的字符串作为style标签添加到页面中来
-- `vue-loader`：加载 Vue.js 单文件组件
+#### 8-2 loader和plugin的区别？
 
-#### 8-2 有哪些常见的Plugin？你用过哪些Plugin？
+#### 8-3 webpack如何实现懒加载？
 
+#### 8-4 webpack常见性能优化
 
-
-- `clean-webpack-plugin`: 目录清理
+#### 8-5 babel-runtime和babel-polyfill的区别
 
 
 
-#### 8-3 说一说Loader和Plugin的区别
-
-- `loader`本质上是一个function，在该function中对接收到的内容进行转换，返回转换后的结果。由于webpack本身只能处理js文件，loader的主要作用，是处理项目中所依赖的非js文件。
-- `plugin`的意思是插件，它是基于事件流来实现的。在webpack运行的生命周期中会广播出多个钩子事件，plugin能监听这些事件，通过webpack提供的API改变输出结果，扩展webpack的功能
-
-#### 8-4 Webpack构建流程简单说一下
-
-1. **初始化参数**：从配置文件和shell命令中读取并合并参数，得到最终参数
-2. **初始化编译**：将上一步得到的参数生成compiler对象，加载所有配置的插件
-3. **找到入口**：执行上一步compiler对象中的run方法，根据配置中的entry找到入口文件
-4. **模块编译**：从入口文件开始，调用各种loader对依赖的模块进行编译，再找出该模块依赖的模块，递归本步骤直到所有的文件都完成编译，得到所有内容最终编译后结果以及它们之间的依赖关系
-5. **准备输出资源**：根据入口和模块之间的依赖关系，生成若干个包含多个模块的chunk,再把每一个chunk转换成单独的文件加入到输出列表
-6. **完成输出**：确认好输出内容后，根据output中配置的输出路径和文件名，将内容写入磁盘对应目录
 
 
+## 主观题
 
-以上过程中，webpack会在特定时间广播出特定事件，供注册的插件调用api，改变webpack的运行结果
+#### 聊一下对前端行业对认识
 
-
-
-#### 8-5 webpack中的bundle、module、chunk分别是什么
-
-
-
-#### 8-6 使用webpack开发时，你用过哪些可以提高效率的插件？
-
-- `webpack-merge`：提取公共配置，减少重复配置代码
-- `HotModuleReplacementPlugin`：模块热替换
-- `webpack-dashboard`：可以更友好的展示相关打包信息
+前端行业至少两次技术跨越，第一次是在1998年AJax技术出现以后，前端从纯静态网页发展为富交互的动态页面，第二次是在2009年nodejs的出现，
 
  
 
