@@ -78,7 +78,14 @@ HTTPS 协议（HyperText Transfer Protocol over Secure Socket Layer）：一般�
 
 ##### 整个流程
 
-域名解析 —> 与服务器建立连接 —> 发起HTTP请求 —> 服务器响应HTTP请求，浏览器得到html代码 —> 浏览器解析html代码，并请求html代码中的资源（如js、css、图片） —> 浏览器对页面进行渲染呈现给用户
+请求：域名解析 —> 三次握手建立TCP连接 —> 发起HTTP请求 —> 服务器响应HTTP请求，浏览器得到html代码 —> 浏览器解析html代码，并请求html代码中的资源（如js、css、图片） —> 浏览器对页面进行渲染呈现给用户
+
+渲染：1. 根据HTML生产DOM tree
+
+            2. 根据CSS生成CSSOM
+               3. 根据CSSOM和DOM生成render tree
+               4. 根据render tree渲染，遇到script标签则优先加载script并执行
+               5. 直至render tree渲染完毕
 
 #### 1-7 说一下DNS域名解析的详细规则
 
