@@ -76,8 +76,6 @@ HTTPS 协议（HyperText Transfer Protocol over Secure Socket Layer）：一般�
 
 #### 1-6 一个完整的HTTP请求过程
 
-##### 整个流程
-
 请求：域名解析 —> 三次握手建立TCP连接 —> 发起HTTP请求 —> 服务器响应HTTP请求，浏览器得到html代码 —> 浏览器解析html代码，并请求html代码中的资源（如js、css、图片） —> 浏览器对页面进行渲染呈现给用户
 
 渲染：1. 根据HTML生产DOM tree
@@ -113,7 +111,7 @@ TCP 三次握手的意义：client和server双方都能够确定能够向对方�
 
 
 
-#### 1-10 讲一下cookie
+#### 1-10 讲一下cookie、session和token的区别
 
 
 
@@ -142,7 +140,7 @@ TCP 三次握手的意义：client和server双方都能够确定能够向对方�
 
 #### 2-2 画一条 0.5px 的线
 
-##### 方法一： 使用transform:scale()
+方法一： 使用transform:scale()
 
 ```html
 <div class='half-px'></div>  
@@ -155,12 +153,13 @@ TCP 三次握手的意义：client和server双方都能够确定能够向对方�
   }
 </style>
 ```
-##### 方法二：使用meta标签指定initial-scale
+方法二：使用meta标签指定initial-scale
+
 ```html
   <meta name='viewport'  content="width=device-width,initial-scale=0.5">
 ```
 
-##### 方法三：使用canvas指定lineWidth为0.5
+方法三：使用canvas指定lineWidth为0.5
 
 ```html
 <canvas id='drawing'></canvas>
@@ -176,7 +175,8 @@ TCP 三次握手的意义：client和server双方都能够确定能够向对方�
   
 ```
 
-##### 方法四：使用svg指定stroke-width为0.5
+方法四：使用svg指定stroke-width为0.5
+
 ```html
 <svg xmlns="http://www.w3.org/2000/svg" width="200px" height="200px">
   <line x1='0' y1='0' x2='100' y2='100' style="stroke:#f00;stroke-width:0.5"></line>
@@ -221,9 +221,7 @@ BFC常见的特性：
 
 ### 3-1 作用域与闭包
 
-##### 3-1-1 什么场景需要使用闭包
-
-##### 3-1-2 闭包的缺陷
+##### 说一说闭包（什么场景需要使用闭包、闭包的缺陷）
 
 
 
@@ -269,7 +267,15 @@ BFC常见的特性：
 
 ### 3-6 JavaScript中的常用API
 
-##### 3-5-1 DOM是哪种数据结构
+##### let、const和var的区别？
+
+1. let和const是ES6以后出现的定义数据的关键字，其中let用于定义变量，const用于定义常量
+2. **变量提升：**let和const在作用域内不存在变量提升，所以必须在变量声明之后再使用，而var关键字声明的变量能提升到作用域的顶端
+3. **块级作用域：**let和const存在块级作用域，而var只有全局作用域和函数作用域的概念
+4. **重复声明：**let不允许重复声明同一个变量，而var没有这个限制
+5. **全局对象：**ES5中通过var和function关键字定义的全局变量与全局对象的属性基本是等价的，唯一的不同是var定义的全局变量不能用delete删除，而在ES6中，let和const生成的全局变量不再挂在全局对象上。
+
+##### DOM是哪种数据结构
 
 DOM本质是一种树结构
 
@@ -478,7 +484,7 @@ vue会改写数组数据的原型proto为一个新对象，这个新对象的原
 
 
 
-## 主观题
+## 九、主观题
 
 #### 聊一下对前端行业对认识
 
