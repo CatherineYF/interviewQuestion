@@ -185,13 +185,14 @@ TCP 三次握手的意义：client和server双方都能够确定能够向对方�
 
 #### 2-3 介绍下 BFC 及其应用
 
-BFC即块级格式上下文，描述的是DOM里一块隔离了的独立容器，容器内的元素无论如何翻江倒海，都不会影响容器外的元素的布局。
+BFC直译为“块级格式上下文”，指的是一个独立的渲染区域，它规定了其内部的block-level-box如何布局，并且这个区域与外部毫不相干。
 
-BFC常见的特性：
+BFC的布局规则：
 
-1. BFC使得文档流中的两个元素的margin重叠
-2. BFC下的容器能够包裹浮动元素（清除浮动）
-3. BFC能够阻止元素被浮动元素覆盖
+- 内部的box会在垂直方向，一个接一个放置
+- box垂直方向的margin会发生重叠
+- BFC的区域不会与float box重叠
+- 计算BFC的高度时，浮动元素也会参与
 
 触发BFC的条件：
 
@@ -199,7 +200,7 @@ BFC常见的特性：
 2. 浮动元素，设置了float除none之外的属性的元素
 3. 绝对定位元素：position:absolute/fixed
 4. 设置了overflow除visible之外的属性的元素
-5. display为inline-block、table-cell和flex的元素
+5. display为inline-block、table-cell和flex系列、grid系列的元素
 
 #### 2-4 浏览器的渲染原理
 
@@ -210,6 +211,16 @@ BFC常见的特性：
 #### 2-7 分析比较 opacity: 0、visibility: hidden、display: none 优劣和适用场景
 
 #### 2-8 z-index对哪些元素生效
+
+1. 设置元素的position值为relative/absolute/fixed
+
+2. 当opacity不为1或0时
+
+3. 当transform不为none时
+
+4. 当父元素设置display: flex | inline-flex时，子元素设置z-index
+
+
 
 
 
