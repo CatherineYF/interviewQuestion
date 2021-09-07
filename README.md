@@ -219,27 +219,47 @@ BFC常见的特性：
 
 ## 三、Javascript基础
 
-### 3-1 作用域与闭包、this与执行上下文
+### 3-1 作用域与闭包
+
+##### 3-1-1 什么场景需要使用闭包
+
+##### 3-1-2 闭包的缺陷
 
 
 
-### 3-2 原型与继承
+### 3-2 this与执行上下文
+
+##### 简单描述 this 在不同场景下的指向
+
+##### apply/call/bind 的使用
+
+##### 箭头函数与普通函数的区别
+
+
+
+### 3-3 原型与继承
 
 ##### 3-2-1 ES5/ES6 的继承除了写法以外还有什么区别？
 
 
 
-### 3-3 单线程、异步与事件机制
+### 3-4 单线程、异步与事件机制
 
 ##### 3-3-1 JavaScript为什么引入异步？它有哪些使用场景？
 
-##### 3-3-2 setTimeout、Promise、Async/Await 的区别
+##### 3-3-2 关于 setTimeout、setInterval 的时间精确性
+
+##### setTimeout、Promise、Async/Await 的区别
+
+##### Web Workers 和 Service Workers 的理解
 
 
 
 
 
-### 3-4 promise、async/await、generator函数
+
+
+### 3-5 promise、async/await、generator函数
 
 ##### 3-4-1 简述一下 Generator 函数
 
@@ -247,7 +267,7 @@ BFC常见的特性：
 
 
 
-### 3-5 JS-web-API
+### 3-6 JavaScript中的常用API
 
 ##### 3-5-1 DOM是哪种数据结构
 
@@ -257,11 +277,9 @@ DOM本质是一种树结构
 
 1. 从容量上看：cookie只有4kb大小，而localStorage和sessionStorage可以存储5M
 2. 从API易用性上看：cookie的API比较简陋，存取cookie不方便，而localStorage和sessionStorage API比较完善
-3. 从设计初衷上看：cookie本身是为了解决服务端和浏览器通信问题而生的，它会随着http请求发送给后端，而localStorage和sessionStorage不会发送给后端，它们的出现是为了实现浏览器存储。
+3. 从设计初衷上看：cookie本身是为了解决服务端和浏览器通信问题而生的，它会随着http请求发送给后端，而localStorage和sessionStorage不会发送给后端，它们的出现是为了实现浏览器存储。 
 
-### 3-6 JavaScript中的常用API
-
-##### 3-6-1 class关键字定义类和普通构造函数定义类的区别
+##### class关键字定义类和普通构造函数定义类的区别
 
 1. class不像构造函数，没有变量提升
 2. class中挂载在原型上的方法是不可枚举的，而构造函数的prototype上添加的方法是可枚举的
@@ -269,19 +287,19 @@ DOM本质是一种树结构
 4. class在继承中有两条原型链：子类的proto指向父类，子类的prototype的proto指向父类的prototype
 5. ES5中的原生构造函数无法实现继承，ES6中使用class语法可以实现继承
 
-##### 3-6-2 如何实现浏览器内多个标签页之间的通信？
+##### 如何实现浏览器内多个标签页之间的通信？
 
 
 
-##### 3-6-3 说说for，for-in ，for-of和forEach的区别
+##### 说说for，for-in ，for-of和forEach的区别
 
 
 
-##### 3-6-4 介绍下 Set、Map、WeakSet 和 WeakMap 的区别？
+##### 介绍下 Set、Map、WeakSet 和 WeakMap 的区别？
 
 
 
-##### 3-6-5 聊聊Blob和ArrayBuffer
+##### 聊聊Blob和ArrayBuffer
 
 
 
