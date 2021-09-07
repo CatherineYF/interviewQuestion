@@ -53,16 +53,14 @@ HTTPS 协议（HyperText Transfer Protocol over Secure Socket Layer）：一般�
 
 ​					协商缓存一般通过http请求和响应的两对标识实现，他们分别是：last-modified和if-modified-since、e-tag和if-none-match
 
-##### 【last-modified和if-modified-since】的原理：
+**【last-modified和if-modified-since】的原理：**
 
 		1. 客户端首次请求资源，服务区返回资源，并在响应头带上last-modified标识，表示该资源上一次修改的时间
 		2. 客户端第二次请求该资源，则会在请求头带上if-modified-since字段，其值则为上一次响应中last-modified字段的值
 		3. 服务区接收第二次请求，利用if-modified-since字段的值，和服务器上资源的最后修改时间做比较，如果一致，则表示资源没有变化，返回304，若不一致，则表示资源有了变化，返回200和新资源
 		4. 浏览器若收到304，则会从缓存中加载资源，若收到200则正常加载新资源
 
-
-
-##### 【E-tag和if-none-match】的原理
+**【E-tag和if-none-match】的原理**
 
 #### 1-4 304状态码的意思，和302的区别
 
@@ -211,21 +209,65 @@ BFC常见的特性：
 
 #### 2-7 分析比较 opacity: 0、visibility: hidden、display: none 优劣和适用场景
 
+#### 2-8 z-index对哪些元素生效
+
+
+
+## 三、浏览器相关
 
 
 
 
 
 
-## 三、Javascript基础
 
-### 3-1 作用域与闭包
+## 四、Javascript基础
 
-##### 说一说闭包（什么场景需要使用闭包、闭包的缺陷）
+### 4-1 作用域与闭包
 
+##### 4-1-1 说一说闭包（什么场景需要使用闭包、闭包的缺陷）
 
+从实践的角度，一个能被称为闭包的函数需要满足两个条件：
 
-### 3-2 this与执行上下文
+1. 创建这个函数的执行上下文已经被销毁，但这个函数依然存在(通过被返回的方式)
+2. 在这个函数中存在自由变量（所谓自由变量，即不是函数参数，也不是函数内的局部变量，换句话说，就是这个函数以外的变量）
+
+使用闭包的场景：
+
+1. 函数柯里化时，保存上一个参数
+
+2. 模仿块级作用域
+
+   ```javascript
+   for(var i = 0; i < 5; i++) {
+       (function(j){
+           setTimeout(() => {
+               console.log(j);
+           }, j * 1000);
+       })(i)
+   }
+   ```
+
+   
+
+3. vue的源码中，定义响应式数据时使用到了闭包
+
+   ```javascript
+   function defineReactive(obj,key,value){
+     return Object.defineProperty(obj,key,{
+       get(){
+         return value
+       },
+       set(newVal){
+         value = newVal
+       }
+     })
+   }
+   ```
+
+   闭包的最重要缺陷是容易造成内存泄露
+
+### 4-2 this与执行上下文
 
 ##### 简单描述 this 在不同场景下的指向
 
@@ -235,17 +277,20 @@ BFC常见的特性：
 
 
 
-### 3-3 原型与继承
+### 4-3 原型与继承
 
-##### 3-2-1 ES5/ES6 的继承除了写法以外还有什么区别？
+##### ES5/ES6 的继承除了写法以外还有什么区别？
+
+1. ES5的继承是通过将子类的prototype指向父类的实例实现的，只存在子类prototype至父类prototype一条继承链。而在ES6的继承中存在两条继承链，除了子类prototype到父类prototype,还有子类class的proto指向父类class
+2. ES5中的继承是先创建子类实例this,再将父类属性添加到子类this上，而ES6中的继承是先创建父类实例this,然后在子类constructor中修改this指向
 
 
 
-### 3-4 单线程、异步与事件机制
+### 4-4 单线程、异步与事件机制
 
-##### 3-3-1 JavaScript为什么引入异步？它有哪些使用场景？
+##### JavaScript为什么引入异步？它有哪些使用场景？
 
-##### 3-3-2 关于 setTimeout、setInterval 的时间精确性
+##### 关于 setTimeout、setInterval 的时间精确性
 
 ##### setTimeout、Promise、Async/Await 的区别
 
@@ -257,15 +302,15 @@ BFC常见的特性：
 
 
 
-### 3-5 promise、async/await、generator函数
+### 4-5 promise、async/await、generator函数
 
-##### 3-4-1 简述一下 Generator 函数
+##### 简述一下 Generator 函数
 
-##### 3-4-2 Async/Await 如何通过同步的方式实现异步
+##### Async/Await 如何通过同步的方式实现异步
 
 
 
-### 3-6 JavaScript中的常用API
+### 4-6 JavaScript中的常用API
 
 ##### let、const和var的区别？
 
@@ -293,10 +338,6 @@ DOM本质是一种树结构
 4. class在继承中有两条原型链：子类的proto指向父类，子类的prototype的proto指向父类的prototype
 5. ES5中的原生构造函数无法实现继承，ES6中使用class语法可以实现继承
 
-##### 如何实现浏览器内多个标签页之间的通信？
-
-
-
 ##### 说说for，for-in ，for-of和forEach的区别
 
 
@@ -315,21 +356,21 @@ DOM本质是一种树结构
 
 
 
-## 四、设计模式
+## 五、设计模式
 
-#### 4-1 什么是设计模式？设计模式如何解决复杂问题？
+#### 5-1 什么是设计模式？设计模式如何解决复杂问题？
 
 
 
-#### 4-2 介绍下观察者模式和订阅-发布模式的区别，各自适用于什么场景
+#### 5-2 介绍下观察者模式和订阅-发布模式的区别，各自适用于什么场景
 
 观察者模式中，发布者和观察者之间彼此知道对方的存在
 
 发布-订阅模式中，发布者和订阅者是相互隔离的，通过事件中心这个中介来进行通信
 
-## 五、性能优化
+## 六、性能优化
 
-#### 5-1 什么是防抖和节流？有什么区别？如何实现？
+#### 6-1 什么是防抖和节流？有什么区别？如何实现？
 
 防抖和节流的使用场景，都是在事件的回调函数被频繁触发时，为了节约性能，使其延缓执行的一种手段。
 
@@ -367,19 +408,19 @@ someBtn.onclick=function(){
 
 节流的使用场景：隔一段时间需要执行一次回调操作（如滚动加载，高频点击按钮）
 
-#### 5-2 页面的可用性时间的计算
+#### 6-2 页面的可用性时间的计算
 
-#### 5-3 简述懒加载，懒加载和预加载的区别？
+#### 6-3 简述懒加载，懒加载和预加载的区别？
 
-#### 5-4 谈谈DNS解析优化中的方法
+#### 6-4 谈谈DNS解析优化中的方法
 
 1. 减少DNS查找
 
 
 
-## 六、网络安全
+## 七、网络安全
 
-#### 6-1 什么是 CSRF 攻击？如何防范 CSRF 攻击？
+#### 7-1 什么是 CSRF 攻击？如何防范 CSRF 攻击？
 
 CSRF攻击原意为跨站请求伪造(cross site request forgery),当用户登录正常网站A后，A网站会向用户的浏览器发送一个cookie用以保存用户信息，如果此时，用户又登录了黑客提供的B网站，而B网站在用户不知情的情况下向A网站发送了请求，此时这个请求会携带上A网站的cookie，让A网站的服务器以为是用户自发的请求，从而达到非法目的。
 
@@ -389,7 +430,7 @@ CSRF攻击原意为跨站请求伪造(cross site request forgery),当用户登�
 2. 使用token来进行身份验证
 3. 给cookie设置samesite属性，只有请求的URL和当前站点一致时，cookie才被发送
 
-#### 6-2 什么是XSS攻击？简述XSS的三种类型
+#### 7-2 什么是XSS攻击？简述XSS的三种类型
 
 XSS攻击又名跨站脚本攻击(Cross site scripting)，主要攻击方式为向页面注入恶意攻击代码，当用户浏览该页面时，内部的恶意代码会执行从而达到攻击的目的。
 
@@ -406,13 +447,13 @@ XSS有三种类型：
 2. 反射型XSS，黑客通过在URL参数中注入恶意脚本，诱导用户点击这个URL，浏览器读取URL，并执行了其中的恶意脚本，从而实现攻击
 3. DOM型XSS，
 
-#### 6-3 什么是SQL注入攻击？
+#### 7-3 什么是SQL注入攻击？
 
 SQL注入是一种常见的数据库攻击手段，它的实现方式，是黑客在表单中提交一段恶意的sql语句到服务器，服务器执行了恶意sql,达到了攻击的目的。
 
 
 
-#### 6-4 什么是DDOS攻击
+#### 7-4 什么是DDOS攻击
 
 ```txt
 DOS攻击又名服务拒绝攻击(Denial of service),其原理是发送大量合法请求到服务器，使服务器进入无法响应的状态
@@ -424,15 +465,13 @@ DOS攻击又名服务拒绝攻击(Denial of service),其原理是发送大量合
 
 
 
-## 七、框架底层原理
+## 八、框架底层原理
 
-#### 7-1 Vue的生命周期？mounted和created的区别？
+#### 8-1 Vue的生命周期？mounted和created的区别？
 
-Vue的生命周期有beforeCreate,created,beforeMount,mounted,beforeUpdate,updated,beforeDestroy,destroyed
 
-其中created是在vue实例构建完成后调用，mounted是在该vue实例的数据挂在到dom上以后调用
 
-#### 7-2 父子组件的生命周期调用顺序？
+#### 父子组件的生命周期调用顺序？
 
 1. 加载渲染过程 `父beforeCreate->父created->父beforeMount->子beforeCreate->子created->子beforeMount->子mounted->父mounted`
 2. 组件更新过程 `父beforeUpdate->子beforeUpdate->子updated->父updated`
@@ -466,25 +505,37 @@ vue会改写数组数据的原型proto为一个新对象，这个新对象的原
 
 
 
+#### computed和watch的区别
 
 
-## 八、 前端工程化
 
-#### 8-1 module、chunk和bundle分别是什么，有何区别？
+#### 为什么需要virtualDOM？
 
-#### 8-2 loader和plugin的区别？
-
-#### 8-3 webpack如何实现懒加载？
-
-#### 8-4 webpack常见性能优化
-
-#### 8-5 babel-runtime和babel-polyfill的区别
+#### 组件的data为何是函数
 
 
 
 
 
-## 九、主观题
+
+
+## 九、 前端工程化
+
+#### 9-1 module、chunk和bundle分别是什么，有何区别？
+
+#### 9-2 loader和plugin的区别？
+
+#### 9-3 webpack如何实现懒加载？
+
+#### 9-4 webpack常见性能优化
+
+#### 9-5 babel-runtime和babel-polyfill的区别
+
+
+
+
+
+## 十、主观题
 
 #### 聊一下对前端行业对认识
 
