@@ -524,6 +524,40 @@ vue会改写数组数据的原型proto为一个新对象，这个新对象的原
 
 #### 组件的data为何是函数
 
+#### Vue3比Vue2的优势？
+
++ 更好的性能
+
+- 文件体积更小
+- ts支持更好
+- 更好的代码组织
+- 更好的逻辑抽离
+
+#### Vue3的生命周期和Vue2的区别
+
+1. 在optionsAPI 中，销毁阶段的名字由destroy改为了unmounte
+2. 在compositionAPI中，created和beforeCreate被整合到了setup方法里
+
+
+
+#### 如何看待Composition API/Option API
+
+#### 如何理解ref toRef和toRefs?
+
+#### Composition API如何实现代码逻辑复用？
+
+#### Vue3如何实现响应式？
+
+#### watch和watchEffect的区别是什么
+
+#### setup中如何获取组件实例？
+
+#### Vue3为何比Vue2快？
+
+#### 介绍一下Vite
+
+
+
 
 
 
