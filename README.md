@@ -328,11 +328,15 @@ JavaScript是一种单线程的语言，所有的任务必须通过主线程执�
 
 ##### 关于 setTimeout、setInterval 的时间精确性
 
+setInterval中，传入的回调函数的执行间隔会小于设定的时间，原因是setInterval会每隔设定的时间向队列中放入回调函数，而执行回调函数本身需要时间
+
+setTimeout可以模拟实现每隔一段时间执行回调，它与setInterval的区别，是能严格保证回调函数在每个设定时间后放入队列
+
 ##### 宏任务和微任务的区别
 
 
 
-##### setTimeout、Promise、Async/Await 的区别
+##### 
 
 ##### Web Workers 和 Service Workers 的理解
 
@@ -347,6 +351,10 @@ web worker能够在客户端开启多线程任务，将主线程中耗时长、�
 ### 4-5 promise、async/await、generator函数
 
 ##### 简述一下 Generator 函数
+
+
+
+##### setTimeout、Promise、Async/Await 的区别
 
 ##### Async/Await 如何通过同步的方式实现异步
 
