@@ -358,7 +358,7 @@ web worker能够在客户端开启多线程任务，将主线程中耗时长、�
 
 ##### Async/Await 如何通过同步的方式实现异步
 
-首先，Async/Await是generator的一个语法糖，本质上是一个自执行的generator函数。而要让一个generator函数自执行，需要自己写一个co函数，在这个函数里递归执行生成器函数的next方法，使generator自执行
+首先，Async/Await是generator的一个语法糖，本质上是一个自执行的generator函数。而要让一个generator函数自执行，需要自己写一个co函数，在这个函数里递归执行genertor函数的next方法，使generator自执行
 
 
 
