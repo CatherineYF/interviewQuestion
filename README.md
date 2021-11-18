@@ -77,14 +77,7 @@ HTTP1.1的问题：
 
 #### 1-6 一个完整的HTTP请求过程
 
-请求：域名解析 —> 三次握手建立TCP连接 —> 发起HTTP请求 —> 服务器响应HTTP请求，浏览器得到html代码 —> 浏览器解析html代码，并请求html代码中的资源（如js、css、图片） —> 浏览器对页面进行渲染呈现给用户
-
-渲染：1. 根据HTML生产DOM tree
-
-            2. 根据CSS生成CSSOM
-               3. 根据CSSOM和DOM生成render tree
-               4. 根据render tree渲染，遇到script标签则优先加载script并执行
-               5. 直至render tree渲染完毕
+请求：DNS域名解析 —> 三次握手建立TCP连接 —> 发起HTTP请求 —> 服务器响应HTTP请求，浏览器得到html代码 —> 浏览器解析html代码，并请求html代码中的资源，渲染页面呈现给用户
 
 #### 1-7 说一下DNS域名解析的详细规则
 
@@ -336,8 +329,6 @@ setTimeout可以模拟实现每隔一段时间执行回调，它与setInterval�
 
 
 
-##### 
-
 ##### Web Workers 和 Service Workers 的理解
 
 web worker能够在客户端开启多线程任务，将主线程中耗时长、计算密集的任务交给worker线程处理，处理完毕再将结果数据返回给主线程。
@@ -519,7 +510,7 @@ DOS攻击又名服务拒绝攻击(Denial of service),其原理是发送大量合
 
 ## 八、框架底层原理
 
-#### 8-1 Vue的生命周期？mounted和created的区别？
+#### Vue的生命周期？mounted和created的区别？
 
 
 
@@ -533,13 +524,39 @@ DOS攻击又名服务拒绝攻击(Denial of service),其原理是发送大量合
 
 #### 如何理解MVVM
 
-MVVM是一种架构模式，其中M代表model数据，在vue中就是data数据；V代表view视图，vue中即DOM元素，vm代表viewModel，  vue中就是vue的一个实例，它控制着model数据和view视图之间的数据变动，当view发送改变时，vm实例中的domListener监听并响应对应事件，使数据model发生对应改变，而model的变化，则通过directive指令表达出来，在视图中呈现。
+
+
+1. 聊聊mvc的概念
+2. 聊聊mvvm产生背景
+3. 聊聊mvvm的优势
+4. 聊聊mvvm出现后，后端的变化
+
+**MVVM架构是从传统的后端架构MVC借鉴过来的**，在传统的web开发中，后端需要把模板和数据组装编译成页面，返回给前端，在这个过程中，出现了MVC这种单一职责、分工协作的思想。其中M代表model数据，V代表view视图，C代表controller控制层，controller收到路由传来的信息，通过model层获取数据，通过view层获取模板，然后将其组装，返回给前端。而在**前端这几年的发展中，出现了SPA单页面应用的新模式，其背后的架构思想就是MVVM**，M同样是数据，V同样是视图，而VM是负责数据和视图通信的桥梁，当数据发生变化时，及时通知视图层变化，当视图发生改变时，及时响应使数据同步改变，**这种架构模式使开发者从繁琐的DOM操作中解脱出来**，专注于数据。顺便提一句，在这种架构模式下，后端不再有视图层逻辑，因为视图层转移到了前端，后端只需响应数据操作即可。
 
 
 
 #### vue中的v-for为何要使用key
 
+#### 对keep-alive的理解，它是如何实现的
 
+Keep-alive是vue中的一个抽象组件，它不会被渲染到DOM中，也不会出现在父组件链中。它的作用，是缓存被其包裹的组件，在组件未被激活时保存组件的状态，而不是直接销毁组件
+
+Keep-alive组件有三个prop：include, exclude,max，其中include和exclude决定了keep-alive内部的哪些组件需要被缓存，而max则限制了被缓存的组件数量
+
+在keep-alive组件的源码中，实现了一个render函数，这个render函数：
+
+1. 首先通过$slot获取包裹的第一个子组件，得到这个子组件的name
+2. 然后去看include和exclude，如果include里没有这个name，或者exclude里有这个name，则代表这个组件不需要缓存，直接返回vnode
+3. 如果确定这个vnode需要缓存，则会通过least recently use策略缓存组件。具体的做法是：
+   - 如果组件key在cache对象中有缓存，则取出该组件实例，并将当前的key更新至keys数组的最末尾
+   - 如果组件尚未缓存，则向cache对象中添加这个组件实例，并向keys数组末尾添加这个组件的key
+   - 如果此时keys数组的长度超过了max，则将keys数组的第一个key弹出，将这个key在cache数组中对应的组件实例删除
+
+#### $nextTick 原理及作用
+
+$nextTick内接受一个回调函数，这个回调内能够在本轮数据更新之后，获取更新后的DOM
+
+$nextTick 的核心是利用了如 Promise 、MutationObserver、setImmediate、setTimeout来模拟对应的微/宏任务，让传入的回调函数随这些异步任务进入回调队列，来实现vue自己的异步回调
 
 #### 说一下vue的响应式原理
 
