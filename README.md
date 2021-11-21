@@ -413,6 +413,23 @@ DOM本质是一种树结构
 
 ## 六、性能优化
 
+性能优化可分为两大类方法：
+
+1. 请求、响应的优化
+   - 使用http2
+   - 使用dns-prefecth\preload\prerender
+   - 使用浏览器缓存机制
+   - vue中使用异步组件，配合webpack实现组件的按需加载，优化首屏渲染速度
+   - 使用webpack的UglifyJsPlugin压缩js资源，使用cssnano压缩css资源，使用html-webpack-plugin的配置项压缩html资源
+   - webpack会在生产环节自动开启tree shaking来删除未用到的代码，使用scope hoisting将代码合并到一个函数中，精简打包代码体积
+   - 图片资源优化
+     - 图标使用雪碧图或字体图标
+     - 小图使用base64格式
+2. 页面渲染优化
+   - 防抖、节流
+   - 使用window.animationRequestFrame来实现js动画
+   - 使用webworker开启多线程任务
+
 #### 6-1 什么是防抖和节流？有什么区别？如何实现？
 
 防抖和节流的使用场景，都是在事件的回调函数被频繁触发时，为了节约性能，使其延缓执行的一种手段。
@@ -512,7 +529,12 @@ DOS攻击又名服务拒绝攻击(Denial of service),其原理是发送大量合
 
 #### Vue的生命周期？mounted和created的区别？
 
-
+1. 当vue实例开始构建时，首先会初始化生命周期和事件，调用beforeCreated钩子
+2. 紧接着会初始化Injections、state、provide这些响应式逻辑，在处理好数据响应式之后会执行created钩子
+3. 然后会判断是否有el选项，去做编译模版的操作，执行beforeMount
+4. 给vm实例添加$el成员，执行mounted钩子
+5. 当数据发生变化时，会触发beforeUpdate钩子，然后虚拟DOM开始重新渲染，并执行patch方法往DOM上更新视图，然后执行updated钩子
+6. 当destroy方法被调用时，会触发beforeDestroy钩子，然后注销watcher,子组件和事件监听，最后执行destroyed钩子
 
 #### 父子组件的生命周期调用顺序？
 
