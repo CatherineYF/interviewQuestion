@@ -1,0 +1,8 @@
+1. 数组的常用方法
+- 添加/删除元素：
+  - pop
+  - push
+  - shift
+  - unshift
+  - splice(index,deleteCount,...items) 从index位置开始，删除deleteCount个元素，并向该位置添加items元素
+  - 
